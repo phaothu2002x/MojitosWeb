@@ -1,16 +1,39 @@
 'use client';
+import gsap from 'gsap';
 import React, { useRef } from 'react';
 import { sliderLists } from '../../constants';
 import { useState } from 'react';
+import { useGSAP } from '@gsap/react';
 
 const Menu = () => {
     const contentRef = useRef(null);
     const [currentIndex, setCurrentIndex] = useState(0);
+
+    useGSAP(() => {
+        gsap.fromTo('#title', { opacity: 0 }, { opacity: 1, duration: 1 });
+        gsap.fromTo(
+            '.cocktail img',
+            { opacity: 0, xPercent: -100 },
+            { xPercent: 0, opacity: 1, duration: 1, ease: 'power2.inOut' }
+        );
+        gsap.fromTo(
+            '.details h2',
+            { yPercent: 100, opacity: 0 },
+            { yPercent: 0, opacity: 1, duration: 1, ease: 'power2.inOut' }
+        );
+        gsap.fromTo(
+            '.details p',
+            { yPercent: 100, opacity: 0 },
+            { yPercent: 0, opacity: 1, duration: 1, ease: 'power2.inOut' }
+        );
+    }, [currentIndex]);
+
     const totalCocktails = sliderLists.length;
     const goToLine = (index) => {
         const newIndex = (index + totalCocktails) % totalCocktails;
         setCurrentIndex(newIndex);
     };
+    // get the ...
     const getCocktailAt = (indexOffset) => {
         return sliderLists[
             (currentIndex + indexOffset + totalCocktails) % totalCocktails
